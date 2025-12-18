@@ -27,6 +27,12 @@ func (this *SyncSet[T]) Remove(item T) {
 	this.items.Delete(item)
 }
 
+// Returns true if item is in the Set.
+func (this *SyncSet[T]) Has(item T) bool {
+	_, ok := this.items.Load(item)
+	return ok
+}
+
 // Returns a slice of all items in the SyncSet.
 // Warning: The order of items in the returned slice is not guaranteed.
 func (this *SyncSet[T]) List() []T {

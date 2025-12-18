@@ -36,12 +36,28 @@ func TestSyncSetWithFunctionPointer(t *testing.T) {
 		return value + 2
 	}
 
+	unused := func(key string, value int) int {
+		return 0
+	}
+
 	syncSet.Add(&callback1)
 	syncSet.Add(&callback2)
 
 	// Adding different function pointers with same implementation
 	addFunc(syncSet)
 	addFunc(syncSet)
+
+	if !syncSet.Has(&callback1) {
+		t.Errorf("Expected 'callback1' to be present in the Set")
+	}
+
+	if !syncSet.Has(&callback2) {
+		t.Errorf("Expected 'callback2' to be present in the Set")
+	}
+
+	if syncSet.Has(&unused) {
+		t.Errorf("Expected 'unused' to NOT be present in the Set")
+	}
 
 	expectedResults := []int{11, 12, 13, 13}
 
@@ -142,6 +158,22 @@ func TestSyncSetWithString(t *testing.T) {
 
 	if syncSet.Size() != 3 {
 		t.Errorf("Expected 3 items, got %d", syncSet.Size())
+	}
+
+	if !syncSet.Has("item1") {
+		t.Errorf("Expected 'item1' to be present in the Set")
+	}
+
+	if !syncSet.Has("item2") {
+		t.Errorf("Expected 'item2' to be present in the Set")
+	}
+
+	if !syncSet.Has("item3") {
+		t.Errorf("Expected 'item3' to be present in the Set")
+	}
+
+	if syncSet.Has("item4") {
+		t.Errorf("Expected 'item4' to NOT be present in the Set")
 	}
 
 	items := syncSet.List()
