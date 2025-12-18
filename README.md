@@ -39,6 +39,7 @@ go test -coverprofile=cover.out
 go tool cover -html cover.out -o cover.html
 firefox cover.html
 git commit ...
+git push
 git tag "v1.1.0"
 git push --tags
 ```
